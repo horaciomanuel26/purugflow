@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>purugFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #fff;
+      --soft: #f6f7f9;
+      --ink: #1b1f27;
+      --mute: #6b7280;
+      --line: #e5e7eb;
+      --accent: #2f5bea
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    [hidden] {
+      display: none !important
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 400 15px/1.5 "DM Sans", system-ui, sans-serif
+    }
+
+    h1 {
+      font-size: 22px;
+      margin: 0;
+      font-weight: 700
+    }
+
+    h2 {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 24px 0 10px
+    }
+
+    .sub {
+      color: var(--mute);
+      font-size: 13px
+    }
+
+    button,
+    select,
+    input,
+    textarea {
+      font: inherit;
+      color: inherit
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 7px 13px;
+      border-radius: 8px;
+      cursor: pointer
+    }
+
+    .btn:hover {
+      border-color: var(--mute)
+    }
+
+    .btn.pri {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      font-weight: 500
+    }
+
+    .btn.sm {
+      padding: 3px 9px;
+      font-size: 13px
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px
+    }
+
+    input[type=text],
+    input[type=email],
+    input[type=password],
+    input[type=date],
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #fff
+    }
+
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 16px 56px
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap
+    }
+
+    .authbox {
+      max-width: 360px;
+      margin: 12vh auto;
+      padding: 0 16px
+    }
+
+    .authbox label,
+    dialog label {
+      display: block;
+      font-size: 13px;
+      color: var(--mute);
+      margin: 12px 0 4px
+    }
+
+    .err {
+      color: #c2272d;
+      font-size: 13px;
+      min-height: 20px;
+      margin-top: 8px
+    }
+
+    .pgrid,
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px
+    }
+
+    .pc,
+    .tile {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer
+    }
+
+    .pc:hover,
+    .tile:hover {
+      border-color: var(--ink)
+    }
+
+    .tile.now {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent)
+    }
+
+    .pc b,
+    .tile b {
+      font-size: 16px;
+      font-weight: 500
+    }
+
+    .pc span,
+    .pc small,
+    .tile span,
+    .tile small {
+      color: var(--mute);
+      font-size: 13px
+    }
+
+    .pc i,
+    .tile i {
+      display: block;
+      height: 5px;
+      background: var(--soft);
+      border-radius: 3px;
+      overflow: hidden
+    }
+
+    .pc u,
+    .tile u {
+      display: block;
+      height: 100%;
+      background: #30a46c
+    }
+
+    .novo {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      max-width: 420px
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh
+    }
+
+    aside {
+      border-right: 1px solid var(--line);
+      padding: 16px 12px;
+      background: var(--soft)
+    }
+
+    aside h3 {
+      font-size: 13px;
+      color: var(--mute);
+      font-weight: 500;
+      margin: 16px 8px 8px
+    }
+
+    .u {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      border: 0;
+      background: none;
+      padding: 7px 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left
+    }
+
+    .u:hover {
+      background: #eceef2
+    }
+
+    .u[aria-pressed="true"] {
+      background: var(--ink);
+      color: #fff
+    }
+
+    .u .n {
+      margin-left: auto;
+      font-size: 12px;
+      opacity: .7
+    }
+
+    .urow {
+      display: flex;
+      align-items: center
+    }
+
+    .urow .x {
+      border: 0;
+      background: none;
+      cursor: pointer;
+      color: var(--mute);
+      padding: 4px 8px
+    }
+
+    .dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      background: var(--c, #888);
+      flex: none
+    }
+
+    main {
+      padding: 20px;
+      min-width: 0
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px
+    }
+
+    .live {
+      font-size: 12px;
+      color: var(--mute);
+      margin-left: 8px
+    }
+
+    .live:before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #b8bec9;
+      margin-right: 5px
+    }
+
+    .live.on:before {
+      background: #30a46c
+    }
+
+    .chart {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px
+    }
+
+    .chart h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      font-weight: 500
+    }
+
+    .rw {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      flex-wrap: wrap
+    }
+
+    .lg {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 14px
+    }
+
+    .lg div {
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .lg i {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px
+    }
+
+    .lg b {
+      margin-left: auto;
+      padding-left: 20px;
+      font-weight: 500
+    }
+
+    .lg small {
+      color: var(--mute);
+      max-width: 260px
+    }
+
+    .bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+      align-items: center
+    }
+
+    .bar input {
+      flex: 1;
+      min-width: 150px;
+      width: auto
+    }
+
+    .weeks {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      flex: 1
+    }
+
+    .wk {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      color: var(--mute);
+      font-size: 13px
+    }
+
+    .wk span {
+      margin-left: 6px;
+      opacity: .7
+    }
+
+    .wk[aria-pressed="true"],
+    .seg button[aria-pressed="true"] {
+      background: var(--ink);
+      color: #fff
+    }
+
+    .seg {
+      display: flex;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden
+    }
+
+    .seg button {
+      border: 0;
+      background: #fff;
+      padding: 7px 12px;
+      cursor: pointer;
+      color: var(--mute)
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(220px, 1fr));
+      gap: 12px;
+      overflow-x: auto;
+      align-items: start
+    }
+
+    .col {
+      background: var(--soft);
+      border-radius: 12px;
+      padding: 10px;
+      min-height: 160px;
+      border-top: 3px solid var(--k)
+    }
+
+    .col.over {
+      outline: 2px dashed var(--k)
+    }
+
+    .col h4 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between
+    }
+
+    .col h4 span {
+      color: var(--mute)
+    }
+
+    .cards,
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    .list .card {
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
+      cursor: default
+    }
+
+    .list .main {
+      flex: 1;
+      min-width: 180px
+    }
+
+    .list .card p {
+      display: none
+    }
+
+    .tag {
+      padding: 1px 8px;
+      border-radius: 99px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font-size: 12px
+    }
+
+    .empty {
+      color: var(--mute);
+      font-size: 13px;
+      padding: 8px;
+      text-align: center
+    }
+
+    dialog {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px;
+      width: min(440px, 92vw);
+      color: var(--ink)
+    }
+
+    dialog::backdrop {
+      background: rgba(0, 0, 0, .35)
+    }
+
+    .sw {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center
+    }
+
+    .sw button {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px var(--line);
+      background: var(--c);
+      cursor: pointer
+    }
+
+    .sw button[aria-pressed="true"] {
+      box-shadow: 0 0 0 2px var(--ink)
+    }
+
+    .sw input[type=color] {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border: 0;
+      background: none
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 18px
+    }
+
+    @media (max-width:760px) {
+      .app {
+        grid-template-columns: 1fr
+      }
+
+      aside {
+        border-right: 0;
+        border-bottom: 1px solid var(--line)
+      }
+
+      .board {
+        grid-template-columns: repeat(4, 240px)
+      }
+    }
+
+    /* cartões estilo Trello */
+    .card{background:#fff;border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:6px;cursor:pointer;box-shadow:0 1px 0 rgba(9,30,66,.25),0 0 0 1px rgba(9,30,66,.04)}
+    .card:hover{background:#f4f5f7}
+    .card .lbl{display:block;width:40px;height:8px;border-radius:4px;background:var(--c)}
+    .card h5{margin:0;font-size:14px;font-weight:500;line-height:1.35;overflow-wrap:anywhere}
+    .badges{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12px;color:var(--mute)}
+    .bd{display:inline-flex;align-items:center;gap:3px;padding:1px 5px;border-radius:4px}
+    .bd.ok{background:#30a46c;color:#fff}
+    .badges .dot{margin-left:auto;width:24px;height:24px}
+    .pbar{height:4px;background:#e5e7eb;border-radius:2px;overflow:hidden}
+    .pbar u{display:block;height:100%;background:#2f5bea;transition:width .3s}
+    .pbar.ok u{background:#30a46c}.pbar.big{height:8px;margin:6px 0 8px}
+    .list .card{cursor:pointer}.list .card .lbl{width:10px;height:10px;border-radius:50%}.list .card h5{flex:1;min-width:160px}
+    dialog{max-height:90vh;overflow:auto}
+    dialog label.sb{display:flex;align-items:center;gap:8px;margin:0;padding:3px 0;font-size:14px;color:var(--ink)}
+    .sb span{flex:1}.sb .fz{text-decoration:line-through;color:var(--mute)}.sb .x{border:0;background:none;cursor:pointer;color:var(--mute)}
+    /* salas com cor */
+    .tile{position:relative;border-top:6px solid var(--sc,#e5e7eb);background:color-mix(in srgb,var(--sc,#fff) 7%,#fff)}
+    .tile.now{border-top-color:var(--sc,#e5e7eb)}
+    .tcor{position:absolute;right:10px;top:10px;width:16px;height:16px;border-radius:50%;background:var(--sc,#e5e7eb);border:2px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer}
+    #dRel{width:min(880px,96vw)}#relBody{max-height:68vh;overflow:auto}
+  </style>
+</head>
+
+<body>
+  <div id="auth" class="authbox" hidden>
+    <h1>purugFlow</h1>
+    <p class="sub" id="aSub">Entre na sua conta</p>
+    <form id="aForm">
+      <div id="aNomeW" hidden><label for="aNome">Nome</label><input type="text" id="aNome" autocomplete="name"></div>
+      <label for="aEmail">Email</label><input type="email" id="aEmail" autocomplete="email" required>
+      <label for="aSenha">Senha</label><input type="password" id="aSenha" autocomplete="current-password" required>
+      <div class="err" id="aErr"></div>
+      <button class="btn pri" style="width:100%" id="aBtn">Entrar</button>
+    </form>
+    <p class="sub"><button class="btn sm" id="aTroca" type="button">Criar conta</button></p>
+  </div>
+
+  <div id="home" hidden>
+    <div class="wrap">
+      <div class="top">
+        <div>
+          <h1>Projetos</h1>
+          <div class="sub" id="quem"></div>
+        </div><button class="btn" id="bSair">Sair</button>
+      </div>
+      <h2>Os meus projetos</h2>
+      <div class="novo"><input type="text" id="pNovo" placeholder="Nome do novo projeto" maxlength="100"
+          aria-label="Nome do novo projeto"><button class="btn pri" id="pCriar">Criar projeto</button></div>
+      <div class="pgrid" id="meus"></div>
+      <h2>Projetos em que participo</h2>
+      <div class="pgrid" id="part"></div>
+    </div>
+  </div>
+
+  <div id="proj" class="app" hidden>
+    <aside>
+      <button class="btn sm" id="bHome">Todos os projetos</button>
+      <h3 id="pNome" style="color:var(--ink);font-size:16px;font-weight:700"></h3>
+      <h3>Utilizadores</h3>
+      <div id="ul"></div>
+      <div id="addm" hidden style="margin:12px 8px 0"><input type="email" id="mEmail" placeholder="Email do membro"
+          aria-label="Email do membro"><button class="btn sm" id="mAdd" style="margin-top:6px">Adicionar ao
+          projeto</button></div>
+    </aside>
+    <main>
+      <header>
+        <div>
+          <h1 id="tit"></h1>
+          <div class="sub"><span id="resumo"></span><span class="live" id="live">Ao vivo</span></div>
+        </div><button class="btn pri" id="bNova">Nova tarefa</button>
+      </header>
+      <section id="salas"></section>
+      <div id="sala" hidden>
+        <div class="bar"><button class="btn" id="bVoltar">Voltar às salas</button><button class="btn" id="bRel">Relatório</button>
+          <div class="weeks" id="weeks"></div>
+        </div>
+        <section class="chart">
+          <h3>Estados das tarefas</h3>
+          <div id="chart"></div>
+        </section>
+        <div class="bar"><input type="text" id="q" placeholder="Pesquisar tarefas" aria-label="Pesquisar tarefas">
+          <div class="seg"><button id="vCards" aria-pressed="true">Cartões</button><button id="vLista"
+              aria-pressed="false">Lista</button></div>
+        </div>
+        <div id="out"></div>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="dTarefa">
+    <h2 id="dTitulo" style="margin:0">Nova tarefa</h2>
+    <label for="tTitulo">Título</label><input type="text" id="tTitulo" maxlength="120">
+    <label for="tData">Data</label><input type="date" id="tData">
+    <label for="tDesc">Descrição</label><textarea id="tDesc" rows="3"></textarea>
+    <label for="tResp">Responsável</label><select id="tResp"></select>
+    <label for="tEstado">Estado</label><select id="tEstado"></select>
+    <label>Subtarefas</label>
+    <div id="tSubs"></div>
+    <div class="novo" style="margin:6px 0 0"><input type="text" id="tSubNova" maxlength="120" placeholder="Nova subtarefa" aria-label="Nova subtarefa"><button class="btn" id="tSubAdd" type="button">Adicionar</button></div>
+    <label>Cor do cartão</label>
+    <div class="sw" id="sw"></div>
+    <div class="row"><button class="btn" id="tDel" style="margin-right:auto">Apagar</button><button class="btn" id="tCancel">Cancelar</button><button class="btn pri"
+        id="tSave">Guardar</button></div>
+  </dialog>
+
+  <dialog id="dCor"><h2 style="margin:0">Cor da sala</h2><div class="sw" id="swS" style="margin-top:12px"></div><div class="row"><button class="btn pri" id="cClose">Fechar</button></div></dialog>
+  <dialog id="dRel"><div id="relBody"></div><div class="row"><button class="btn" id="rCsv">Descarregar CSV (Excel)</button><button class="btn" id="rPrint">Imprimir / PDF</button><button class="btn pri" id="rClose">Fechar</button></div></dialog>
+
+  <script>
+    const EST = [{ n: "Tarefas", k: "#6b7280" }, { n: "Em andamento", k: "#2f5bea" }, { n: "Feitas", k: "#30a46c" }, { n: "Canceladas", k: "#e5484d" }];
+    const CORES = ["#8a94a6", "#e5484d", "#f08a24", "#e5b400", "#30a46c", "#12a594", "#2f5bea", "#8e4ec6", "#d6409f"];
+    const MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const ini = n => n.trim().split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase();
+    const hoje = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0") };
+    const semanaDe = d => Math.min(5, Math.ceil(+d.slice(8, 10) / 7));
+    const nomeSala = k => MESES[+k.slice(5) - 1] + " " + k.slice(0, 4);
+    const cnt = (l, e) => l.filter(t => t.estado === e).length;
+    const soma = l => l.reduce((s, x) => s + +x.n, 0);
+    let me = null, P = null, M = [], R = [], T = [], mes = null, sem = 0, sel = 0, vista = "cards", ano = new Date().getFullYear(), rev = 0, editT = null, cor = CORES[0], dragId = null, regMode = false;
+    const mb = id => M.find(m => m.id == id);
+
+    async function api(a, body, q = "") {
+      const r = await fetch("api.php?a=" + a + q, { method: body ? "POST" : "GET", headers: { "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined });
+      const d = await r.json().catch(() => ({ erro: "Erro no servidor" }));
+      if (!r.ok) throw Object.assign(new Error(d.erro || "Erro"), { status: r.status });
+      return d;
+    }
+    const ver = v => { ["auth", "home", "proj"].forEach(i => $(i).hidden = i !== v) };
+
+    /* conta */
+    function modo() { $("aNomeW").hidden = !regMode; $("aSub").textContent = regMode ? "Crie a sua conta" : "Entre na sua conta"; $("aBtn").textContent = regMode ? "Criar conta" : "Entrar"; $("aTroca").textContent = regMode ? "Já tenho conta" : "Criar conta"; $("aErr").textContent = "" }
+    $("aTroca").onclick = () => { regMode = !regMode; modo() };
+    $("aForm").onsubmit = async e => {
+      e.preventDefault();
+      try { await api(regMode ? "registar" : "entrar", { nome: $("aNome").value, email: $("aEmail").value, senha: $("aSenha").value }); $("aSenha").value = ""; await iniciar() }
+      catch (x) { $("aErr").textContent = x.message }
+    };
+    $("bSair").onclick = async () => { await api("sair", {}); me = null; P = null; ver("auth") };
+    async function iniciar() { me = await api("eu"); if (!me) { ver("auth"); return } $("quem").textContent = me.nome + ", " + me.email; ver("home"); carregarHome() }
+
+    /* início: projetos */
+    const pcard = p => {
+      const pc = p.total ? Math.round(p.feitas / p.total * 100) : 0;
+      return `<button class="pc" data-open="${p.id}"><b>${esc(p.nome)}</b><span>${p.total} tarefas, ${p.feitas} feitas</span><i><u style="width:${pc}%"></u></i><small>${p.membros} membros${p.dono_id == me.id ? "" : ", dono: " + esc(p.dono)}</small></button>`
+    };
+    async function carregarHome() {
+      const d = await api("projetos");
+      $("meus").innerHTML = d.meus.map(pcard).join("") || '<div class="sub">Ainda não criou nenhum projeto.</div>';
+      $("part").innerHTML = d.participo.map(pcard).join("") || '<div class="sub">Ainda não foi adicionado a nenhum projeto.</div>';
+    }
+    $("pCriar").onclick = async () => {
+      const n = $("pNovo").value.trim(); if (!n) return $("pNovo").focus();
+      try { const d = await api("projeto_criar", { nome: n }); $("pNovo").value = ""; abrir(d.id) } catch (x) { alert(x.message) }
+    };
+    $("home").addEventListener("click", e => { const b = e.target.closest("[data-open]"); if (b) abrir(+b.dataset.open) });
+    $("bHome").onclick = () => { P = null; mes = null; ver("home"); carregarHome() };
+
+    /* projeto */
+    async function abrir(id) { P = { id }; mes = null; sem = 0; sel = 0; ver("proj"); await carregar() }
+    async function carregar() {
+      const d = await api("dados", null, "&p=" + P.id + (mes ? "&mes=" + mes : ""));
+      P = d.projeto; M = d.membros; R = d.resumo; T = d.tarefas; CS = d.cores || {}; rev = P.rev; render();
+    }
+    function live(on) { $("live").classList.toggle("on", on) }
+    async function poll() {
+      if (!P || document.hidden || dragId || $("proj").hidden) return;
+      try { const d = await api("rev", null, "&p=" + P.id); live(true); if (d.rev !== rev) await carregar() }
+      catch (e) { live(false); if (e.status === 401) location.reload(); if (e.status === 403) { alert("Já não tem acesso a este projeto."); $("bHome").click() } }
+    }
+    setInterval(poll, 2500); document.addEventListener("visibilitychange", poll);
+
+    function render() {
+      if (sel && !mb(sel)) sel = 0;
+      $("pNome").textContent = P.nome; $("addm").hidden = P.dono_id != me.id;
+      usuarios();
+      $("sala").hidden = !mes; $("salas").hidden = !!mes;
+      mes ? renderSala() : renderSalas();
+    }
+    function usuarios() {
+      const f = x => !mes || x.m === mes;
+      const it = (id, nome, c, n) => `<div class="urow"><button class="u" data-u="${id}" aria-pressed="${sel == id}">${id ? `<span class="dot" style="--c:${esc(c)}">${esc(ini(nome))}</span>` : ""}${esc(nome)}<span class="n">${n}</span></button>${id && P.dono_id == me.id && id != P.dono_id ? `<button class="x" data-rm="${id}" aria-label="Remover ${esc(nome)}">×</button>` : ""}</div>`;
+      $("ul").innerHTML = it(0, "Geral", "", soma(R.filter(f))) + M.map(m => it(m.id, m.nome, m.cor, soma(R.filter(x => f(x) && x.r == m.id)))).join("");
+    }
+    $("ul").addEventListener("click", async e => {
+      const rm = e.target.closest("[data-rm]");
+      if (rm) { if (confirm("Remover este membro do projeto? As tarefas dele ficam sem responsável.")) { try { await api("membro_rem", { p: P.id, u: +rm.dataset.rm }); await carregar() } catch (x) { alert(x.message) } } return }
+      const b = e.target.closest("[data-u]"); if (b) { sel = +b.dataset.u; render() }
+    });
+    $("mAdd").onclick = async () => {
+      const em = $("mEmail").value.trim(); if (!em) return $("mEmail").focus();
+      try { await api("membro_add", { p: P.id, email: em }); $("mEmail").value = ""; await carregar() } catch (x) { alert(x.message) }
+    };
+
+    function renderSalas() {
+      $("tit").textContent = "Salas" + (sel ? " de " + mb(sel).nome : "");
+      $("resumo").textContent = "Cada sala guarda as tarefas de um mês. Abra uma sala para ver as tarefas.";
+      $("salas").innerHTML = `<div class="bar"><button class="btn sm" data-y="-1">Anterior</button><strong>${ano}</strong><button class="btn sm" data-y="1">Seguinte</button><button class="btn sm" data-rel="ano" style="margin-left:auto">Relatório do ano</button></div><div class="tiles">` +
+        MESES.map((m, i) => {
+          const k = ano + "-" + String(i + 1).padStart(2, "0"), l = R.filter(x => x.m === k && (!sel || x.r == sel)), tot = soma(l), f = soma(l.filter(x => x.e === "Feitas")), atual = k === hoje().slice(0, 7);
+          return `<div class="tile${atual ? " now" : ""}" role="button" tabindex="0" data-s="${k}" style="--sc:${CS[k] || "#e5e7eb"}"><b>${m}</b><span>${tot} tarefas</span><i><u style="width:${tot ? Math.round(f / tot * 100) : 0}%"></u></i><small>${f} feitas${atual ? ", mês atual" : ""}</small><span class="tcor" data-sc="${k}" title="Mudar a cor da sala" aria-label="Mudar a cor da sala"></span></div>`
+        }).join("") + "</div>";
+    }
+    $("salas").addEventListener("click", async e => {
+      const sc = e.target.closest("[data-sc]"); if (sc) { corSala = sc.dataset.sc; corS = CS[corSala] || "#8a94a6"; coresSala(); $("dCor").showModal(); return }
+      if (e.target.closest("[data-rel]")) { relAno(); return }
+      const y = e.target.closest("[data-y]"); if (y) { ano += +y.dataset.y; renderSalas(); return }
+      const s = e.target.closest("[data-s]"); if (s) { mes = s.dataset.s; sem = mes === hoje().slice(0, 7) ? semanaDe(hoje()) : 1; await carregar() }
+    });
+    $("salas").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches(".tile")) e.target.click() });
+    $("bVoltar").onclick = () => { mes = null; T = []; render() };
+    $("weeks").addEventListener("click", e => { const b = e.target.closest("[data-w]"); if (b) { sem = +b.dataset.w; render() } });
+
+    /* gráfico em rosca: anel exterior = geral, anel interior = utilizador */
+    function rosca(G, U) {
+      let s = '<svg viewBox="0 0 140 140" width="160" height="160" role="img" aria-label="Estados das tarefas">';
+      [[58, G]].concat(U ? [[38, U]] : []).forEach(([r, L]) => {
+        const c = 2 * Math.PI * r; s += `<circle cx="70" cy="70" r="${r}" fill="none" stroke="#eef0f3" stroke-width="14"/>`; let acc = 0;
+        EST.forEach(e => {
+          const n = cnt(L, e.n); if (!n) return; const len = n / L.length * c;
+          s += `<circle cx="70" cy="70" r="${r}" fill="none" stroke="${e.k}" stroke-width="14" stroke-dasharray="${len} ${c - len}" stroke-dashoffset="${-acc}" transform="rotate(-90 70 70)"/>`; acc += len
+        })
+      });
+      return s + `<text x="70" y="76" text-anchor="middle" font-size="20" font-weight="700" fill="#1b1f27">${(U || G).length}</text></svg>`;
+    }
+    function cartao(t) {
+      const m = mb(t.r), S = t.subs || [], f = S.filter(x => +x.f).length, pc = S.length ? Math.round(f / S.length * 100) : 0;
+      return `<article class="card" draggable="true" tabindex="0" data-id="${t.id}" style="--c:${esc(t.cor)}">
+    <span class="lbl"></span><h5>${esc(t.titulo)}</h5>
+    <div class="badges"><span class="bd" title="Data">${t.dia.slice(8, 10)}/${t.dia.slice(5, 7)}</span>${t.descricao ? '<span class="bd" title="Tem descrição">≡</span>' : ""}${S.length ? `<span class="bd${f === S.length ? " ok" : ""}" title="Subtarefas">☑ ${f}/${S.length}</span>` : ""}${vista === "lista" ? `<span class="bd">${t.estado}</span>` : ""}${m ? `<span class="dot" style="--c:${esc(m.cor)}" title="${esc(m.nome)}">${esc(ini(m.nome))}</span>` : ""}</div>
+    ${S.length ? `<div class="pbar${f === S.length ? " ok" : ""}"><u style="width:${pc}%"></u></div>` : ""}</article>`;
+    }
+    function renderSala() {
+      const dw = t => !sem || semanaDe(t.dia) === sem, G = T.filter(dw), U = sel ? G.filter(t => t.r == sel) : null, base = U || G, q = $("q").value.toLowerCase();
+      const ts = base.filter(t => !q || (t.titulo + " " + (t.descricao || "")).toLowerCase().includes(q));
+      $("tit").textContent = "Sala de " + nomeSala(mes) + (sel ? " de " + mb(sel).nome : " (geral)");
+      $("resumo").textContent = `${base.length} tarefas, ${cnt(base, "Feitas")} feitas`;
+      $("weeks").innerHTML = [0, 1, 2, 3, 4, 5].map(w => `<button class="wk" data-w="${w}" aria-pressed="${sem === w}">${w ? "Semana " + w : "Mês inteiro"}<span>${T.filter(t => (!sel || t.r == sel) && (!w || semanaDe(t.dia) === w)).length}</span></button>`).join("");
+      $("chart").innerHTML = `<div class="rw">${rosca(G, U)}<div class="lg">${EST.map(e => `<div><i style="background:${e.k}"></i>${e.n}<b>${cnt(G, e.n)}${U ? " / " + cnt(U, e.n) : ""}</b></div>`).join("")}<small>${U ? "Anel exterior: geral. Anel interior: " + esc(mb(sel).nome) + ". Números: geral / utilizador." : "Geral da sala."}</small></div></div>`;
+      $("vCards").setAttribute("aria-pressed", vista === "cards"); $("vLista").setAttribute("aria-pressed", vista === "lista");
+      if (vista === "cards") {
+        $("out").className = "board";
+        $("out").innerHTML = EST.map(e => { const l = ts.filter(t => t.estado === e.n); return `<div class="col" data-col="${e.n}" style="--k:${e.k}"><h4>${e.n}<span>${l.length}</span></h4><div class="cards">${l.map(cartao).join("") || '<div class="empty">Arraste tarefas para aqui</div>'}</div></div>` }).join("");
+      } else { $("out").className = "list"; $("out").innerHTML = ts.length ? EST.flatMap(e => ts.filter(t => t.estado === e.n)).map(cartao).join("") : '<div class="empty">Nenhuma tarefa.</div>' }
+    }
+    $("q").addEventListener("input", renderSala);
+    $("vCards").onclick = () => { vista = "cards"; renderSala() }; $("vLista").onclick = () => { vista = "lista"; renderSala() };
+
+    /* gravar (com proteção contra edições simultâneas) */
+    async function salvar(o) {
+      try { await api("tarefa_salvar", { p: P.id, id: o.id, versao: o.versao, titulo: o.titulo, descricao: o.descricao, r: o.r || 0, estado: o.estado, cor: o.cor, dia: o.dia, subs: o.subs || [] }) }
+      catch (x) { alert(x.message) }
+      await carregar();
+    }
+    $("out").addEventListener("dragstart", e => { const c = e.target.closest(".card"); if (c) { dragId = +c.dataset.id; c.style.opacity = .4; e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", dragId) } });
+    $("out").addEventListener("dragend", () => { dragId = null; renderSala() });
+    $("out").addEventListener("dragover", e => { const c = e.target.closest(".col"); if (c && dragId) { e.preventDefault(); document.querySelectorAll(".col.over").forEach(x => x !== c && x.classList.remove("over")); c.classList.add("over") } });
+    $("out").addEventListener("drop", async e => {
+      const c = e.target.closest(".col"); if (!c || !dragId) return; e.preventDefault();
+      const t = T.find(x => x.id == dragId); dragId = null; if (t && t.estado !== c.dataset.col) await salvar({ ...t, estado: c.dataset.col }); else renderSala()
+    });
+    $("out").addEventListener("click", e => { const c = e.target.closest(".card"); if (!c) return; const t = T.find(x => x.id == c.dataset.id); if (t) abrirTarefa(t) });
+    $("out").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches(".card")) e.target.click() });
+
+    /* diálogo da tarefa */
+    function cores() { $("sw").innerHTML = CORES.map(c => `<button type="button" style="--c:${c}" data-c="${c}" aria-label="Cor ${c}" aria-pressed="${c === cor}"></button>`).join("") + `<input type="color" id="swC" value="${cor}" aria-label="Cor personalizada">` }
+    $("sw").addEventListener("click", e => { const b = e.target.closest("[data-c]"); if (b) { cor = b.dataset.c; cores() } });
+    $("sw").addEventListener("input", e => { if (e.target.id === "swC") { cor = e.target.value; cores() } });
+    let SUBS = [], CS = {}, corSala = "", corS = CORES[0], REL = null;
+    function subsUI() {
+      const f = SUBS.filter(x => x.f).length;
+      $("tSubs").innerHTML = (SUBS.length ? `<div class="pbar big${f === SUBS.length ? " ok" : ""}"><u style="width:${Math.round(f / SUBS.length * 100)}%"></u></div>` : "") +
+        SUBS.map((s, i) => `<label class="sb"><input type="checkbox" data-si="${i}"${s.f ? " checked" : ""}><span class="${s.f ? "fz" : ""}">${esc(s.t)}</span><button type="button" class="x" data-sd="${i}" aria-label="Remover subtarefa">×</button></label>`).join("");
+    }
+    $("tSubs").addEventListener("change", e => { const c = e.target.closest("[data-si]"); if (c) { SUBS[+c.dataset.si].f = c.checked ? 1 : 0; subsUI() } });
+    $("tSubs").addEventListener("click", e => { const b = e.target.closest("[data-sd]"); if (b) { SUBS.splice(+b.dataset.sd, 1); subsUI() } });
+    const addSub = () => { const v = $("tSubNova").value.trim(); if (!v) return; SUBS.push({ t: v, f: 0 }); $("tSubNova").value = ""; subsUI(); $("tSubNova").focus() };
+    $("tSubAdd").onclick = addSub; $("tSubNova").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); addSub() } });
+    function abrirTarefa(t) {
+      editT = t || null; $("dTitulo").textContent = t ? "Editar tarefa" : "Nova tarefa"; $("tDel").hidden = !t;
+      $("tResp").innerHTML = '<option value="">Sem responsável</option>' + M.map(m => `<option value="${m.id}">${esc(m.nome)}</option>`).join("");
+      $("tEstado").innerHTML = EST.map(e => `<option>${e.n}</option>`).join("");
+      $("tTitulo").value = t ? t.titulo : ""; $("tDesc").value = t ? t.descricao || "" : "";
+      $("tData").value = t ? t.dia : (mes && !hoje().startsWith(mes) ? mes + "-01" : hoje());
+      $("tResp").value = t ? t.r || "" : sel || ""; $("tEstado").value = t ? t.estado : "Tarefas";
+      SUBS = t ? (t.subs || []).map(x => ({ t: x.t, f: +x.f })) : []; subsUI(); $("tSubNova").value = "";
+      cor = t ? t.cor : CORES[0]; cores(); $("dTarefa").showModal(); $("tTitulo").focus();
+    }
+    $("bNova").onclick = () => abrirTarefa(null);
+    $("tCancel").onclick = () => $("dTarefa").close();
+    $("tDel").onclick = async () => { if (!editT || !confirm("Apagar esta tarefa?")) return; $("dTarefa").close(); try { await api("tarefa_apagar", { p: P.id, id: editT.id }) } catch (x) { alert(x.message) } await carregar() };
+    $("tSave").onclick = async () => {
+      const titulo = $("tTitulo").value.trim(); if (!titulo) return $("tTitulo").focus();
+      const pend = $("tSubNova").value.trim(); if (pend) SUBS.push({ t: pend, f: 0 });
+      const o = { titulo, descricao: $("tDesc").value.trim(), r: +$("tResp").value || 0, estado: $("tEstado").value, cor, dia: $("tData").value || hoje(), subs: SUBS };
+      $("dTarefa").close(); await salvar(editT ? { ...editT, ...o } : o)
+    };
+
+    /* cor das salas */
+    function coresSala() { $("swS").innerHTML = CORES.map(c => `<button type="button" style="--c:${c}" data-c="${c}" aria-label="Cor ${c}" aria-pressed="${c === corS}"></button>`).join("") + `<input type="color" id="swSC" value="${corS}" aria-label="Cor personalizada">` }
+    async function pintar(c) { corS = c; coresSala(); try { await api("sala_cor", { p: P.id, mes: corSala, cor: c }) } catch (x) { alert(x.message) } await carregar() }
+    $("swS").addEventListener("click", e => { const b = e.target.closest("[data-c]"); if (b) pintar(b.dataset.c) });
+    $("swS").addEventListener("change", e => { if (e.target.id === "swSC") pintar(e.target.value) });
+    $("cClose").onclick = () => $("dCor").close();
+
+    /* relatórios (respeitam o mês, a semana e o utilizador escolhidos) */
+    const EN = EST.map(e => e.n), pcf = (f, t) => t ? Math.round(f / t * 100) + "%" : "0%";
+    const lin = (nome, g) => { const c = EN.map(g), t = c.reduce((a, b) => a + b, 0); return [nome, t, ...c, pcf(c[2], t)] };
+    const CAB = ["Total", ...EN, "% feitas"];
+    function relMes() {
+      const base = T.filter(t => (!sem || semanaDe(t.dia) === sem) && (!sel || t.r == sel));
+      const por = (sel ? M.filter(m => m.id == sel) : M).map(m => lin(m.nome, e => cnt(base.filter(t => t.r == m.id), e)));
+      const sr = base.filter(t => !t.r); if (sr.length) por.push(lin("Sem responsável", e => cnt(sr, e)));
+      const sb = base.flatMap(t => t.subs || []), sf = sb.filter(x => +x.f).length;
+      REL = {
+        arq: "relatorio-" + mes + (sem ? "-semana" + sem : ""), titulo: "Relatório de " + nomeSala(mes) + (sem ? ", semana " + sem : ""), sub: P.nome + (sel ? " · " + mb(sel).nome : " · geral"),
+        kpi: [["Tarefas", base.length], ["Feitas", cnt(base, "Feitas") + " (" + pcf(cnt(base, "Feitas"), base.length) + ")"], ["Em andamento", cnt(base, "Em andamento")], ["Canceladas", cnt(base, "Canceladas")], ["Subtarefas feitas", sb.length ? sf + "/" + sb.length : "—"]],
+        blocos: [{ t: "Por utilizador", h: ["Utilizador", ...CAB], r: por },
+        { t: "Tarefas", h: ["Data", "Título", "Responsável", "Estado", "Subtarefas", "Descrição"], r: EN.flatMap(e => base.filter(t => t.estado === e)).map(t => { const s = t.subs || []; return [t.dia.slice(8, 10) + "/" + t.dia.slice(5, 7), t.titulo, mb(t.r)?.nome || "—", t.estado, s.length ? s.filter(x => +x.f).length + "/" + s.length : "—", t.descricao || ""] }) }]
+      }; mostrarRel();
+    }
+    function relAno() {
+      const r = R.filter(x => x.m.startsWith(String(ano)) && (!sel || x.r == sel)), g = (l, e) => soma(l.filter(x => x.e === e));
+      const meses = MESES.map((n, i) => { const k = ano + "-" + String(i + 1).padStart(2, "0"); return lin(n, e => g(r.filter(x => x.m === k), e)) }).filter(x => x[1]);
+      const por = (sel ? M.filter(m => m.id == sel) : M).map(m => lin(m.nome, e => g(r.filter(x => x.r == m.id), e)));
+      const sr = r.filter(x => !x.r); if (sr.length) por.push(lin("Sem responsável", e => g(sr, e)));
+      REL = {
+        arq: "relatorio-" + ano, titulo: "Relatório de " + ano, sub: P.nome + (sel ? " · " + mb(sel).nome : " · geral"),
+        kpi: [["Tarefas", soma(r)], ["Feitas", g(r, "Feitas") + " (" + pcf(g(r, "Feitas"), soma(r)) + ")"], ["Em andamento", g(r, "Em andamento")], ["Canceladas", g(r, "Canceladas")]],
+        blocos: [{ t: "Por mês", h: ["Mês", ...CAB], r: meses }, { t: "Por utilizador", h: ["Utilizador", ...CAB], r: por }]
+      }; mostrarRel();
+    }
+    const RCSS = '.rel{font:14px/1.45 "DM Sans",system-ui,sans-serif;color:#1b1f27}.rel h1{font-size:22px;margin:0}.rel h3{font-size:15px;margin:22px 0 8px}.rel .sub{color:#6b7280;font-size:13px}.rel table{width:100%;border-collapse:collapse;font-size:13px}.rel th,.rel td{border-bottom:1px solid #e5e7eb;padding:6px 8px;text-align:left;vertical-align:top}.rel th{background:#f6f7f9;font-weight:500}.rel .kpis{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.rel .kpis div{border:1px solid #e5e7eb;border-radius:8px;padding:8px 14px}.rel .kpis b{display:block;font-size:18px}.rel .kpis span{font-size:12px;color:#6b7280}@media print{.rel tr{break-inside:avoid}}';
+    const tab = b => `<h3>${esc(b.t)}</h3><table><thead><tr>${b.h.map(x => `<th>${esc(x)}</th>`).join("")}</tr></thead><tbody>${b.r.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${b.h.length}">Sem dados</td></tr>`}</tbody></table>`;
+    const htmlRel = () => `<style>${RCSS}</style><div class="rel"><h1>${esc(REL.titulo)}</h1><p class="sub">${esc(REL.sub)} · gerado em ${new Date().toLocaleString("pt-PT")} por ${esc(me.nome)}</p><div class="kpis">${REL.kpi.map(([a, b]) => `<div><b>${esc(b)}</b><span>${esc(a)}</span></div>`).join("")}</div>${REL.blocos.map(tab).join("")}</div>`;
+    function mostrarRel() { $("relBody").innerHTML = htmlRel(); $("dRel").showModal() }
+    const csv = rows => "\ufeff" + rows.map(r => r.map(c => '"' + String(c ?? "").replace(/"/g, '""') + '"').join(";")).join("\r\n");
+    $("bRel").onclick = relMes; $("rClose").onclick = () => $("dRel").close();
+    $("rCsv").onclick = () => {
+      const rows = [[REL.titulo], [REL.sub], ...REL.kpi, []]; REL.blocos.forEach(b => rows.push([b.t], b.h, ...b.r, []));
+      const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv(rows)], { type: "text/csv;charset=utf-8" })); a.download = REL.arq + ".csv"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000)
+    };
+    $("rPrint").onclick = () => {
+      const w = window.open("", "_blank"); if (!w) return alert("Permita pop-ups para imprimir.");
+      w.document.write(`<!doctype html><meta charset="utf-8"><title>${esc(REL.titulo)}</title><body style="margin:24px">${htmlRel()}</body>`); w.document.close(); w.focus(); setTimeout(() => w.print(), 300)
+    };
+
+    modo(); iniciar();
+  </script>
+</body>
+
+</html>
