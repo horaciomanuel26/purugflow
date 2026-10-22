@@ -1,4 +1,0 @@
-1) Copie a pasta "purugflow" para C:\xampp\htdocs\
-2) phpMyAdmin > importe database.sql
-3) Abra http://localhost/purugflow/registrar.php
-Ficheiros: login.php, registrar.php, index.php (salas), sala.php (dashboard+tarefas), api.php (dados), assets/css/style.css, assets/js/sala.js

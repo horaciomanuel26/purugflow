@@ -1,5 +1,0 @@
-purugFlow
-1) Copie a pasta para C:\xampp\htdocs\purugflow
-2) phpMyAdmin > importe purugflow.sql
-3) (opcional) importe migrar_de_HoGrupo.sql para trazer utilizadores, projetos e tarefas antigos
-4) Abra http://localhost/purugflow/
